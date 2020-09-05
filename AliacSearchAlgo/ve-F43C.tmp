@@ -1,0 +1,114 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Collections;
+using AISearchSample;
+
+namespace AliacSearchAlgo
+{
+    public partial class Form1 : Form
+    {
+        ArrayList nodes; // set of nodes for display of points
+        int count;
+        int state = 0; // 0=normal, 1=move , 2 remove;
+        bool open;
+        
+        public Form1()
+        {
+            InitializeComponent();
+            nodes = new ArrayList();
+            state = 0;
+            open = true;
+            count = 0x41;
+            
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        public string searchopen(int ex,int ey)
+        {
+            String str="";
+            for (int x = 0; x < nodes.Count; x++)
+            {
+                Node temp = (Node)nodes[x];
+                if (ex >= temp.X && ex <= ((temp.X) + 10))
+                {
+                    if (ey >= temp.Y && ey <= ((temp.Y) + 10))
+                    {
+                        open = false;
+                        str = temp.Name;
+                    }
+                }
+                else
+                   open = true;
+               
+            }
+            return str;
+        }
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+              label1.Text = searchopen(e.X,e.Y)+"(" + e.X + ", " + e.Y + ")";
+        }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+          // this creates a node with the current coordinates
+            if (state == 0) // normal mode
+            {   
+                Point s = new Point(e.X, e.Y);
+                    if (open)
+                    {
+                        Node n = new Node();
+                        n.Name=""+(char)count;
+                        count++;
+                        n.X = e.X;
+                        n.Y = e.Y;
+                        nodes.Add(n);
+                        pictureBox1.Refresh();
+                    }                
+                
+            }
+            if (state == 1) // move mode
+            { 
+            
+            }
+            if (state == 2) // remove mode
+            {
+
+            }
+       }
+
+        private void normalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            state = 0; // normal mode settings for the nodes
+        }
+
+        private void moveNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            state = 1; // move seeting for the nodes
+        }
+
+        private void removeNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            state = 2; //remove settings for the nodes
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            for (int x = 0; x < nodes.Count; x++)
+            {
+                Node temp = (Node)nodes[x];
+                g.DrawArc(Pens.Red, temp.X, temp.Y, 10, 10, 0, 360);
+            }
+        }
+    }
+}

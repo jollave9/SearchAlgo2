@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Collections;
+
+namespace AliacSearchAlgo
+{
+    public partial class Form1 : Form
+    {
+        ArrayList nodes;
+        int state = 0; // 0=normal, 1=move , 2 remove;
+        public Form1()
+        {
+            InitializeComponent();
+            nodes = new ArrayList();
+            state = 0;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            label1.Text = "(" + e.X + ", " + e.Y + ")";
+        }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+          // this creates a node with the current coordinates
+            if (state == 0)
+            {
+                nodes.Add(new Point(e.X, e.Y));
+            }
+        }
+    }
+}

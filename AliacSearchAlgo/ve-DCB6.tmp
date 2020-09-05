@@ -1,0 +1,178 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Collections;
+using AISearchSample;
+
+namespace AliacSearchAlgo
+{
+    public partial class Form1 : Form
+    {
+        ArrayList nodes; // set of nodes for display of points
+        int count;
+        int state = 0; // 0=normal, 1=move , 2 remove;
+        bool open;
+        bool movetoggle;
+        
+        public Form1()
+        {
+            InitializeComponent();
+            nodes = new ArrayList();
+            state = 0;
+            open = true;
+            count = 0x41;
+            movetoggle = false;
+            
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        public string searchopen(int ex,int ey)
+        {
+            String str="";
+            open = true;
+            for (int x = 0; x < nodes.Count; x++)
+            {
+                Node temp = (Node)nodes[x];
+                if (ex >= temp.X && ex <= ((temp.X) + 10))
+                {
+                    if (ey >= temp.Y && ey <= ((temp.Y) + 10))
+                    {
+                        open = false;
+                        str = temp.Name;
+                    }
+                }
+               
+               
+            }
+            return str;
+        }
+
+
+        public int searchMove(int ex, int ey) // gets the index number of the node found to be movable
+        {
+            int p = -1;
+            for (int x = 0; x < nodes.Count; x++)
+            {
+                Node temp = (Node)nodes[x];
+                if (ex >= temp.X && ex <= ((temp.X) + 10))
+                {
+                    if (ey >= temp.Y && ey <= ((temp.Y) + 10))
+                    {
+                        p = x;
+                    }
+                }
+            }
+            return p;
+        }
+
+
+        public int searchMovedNode(int ex, int ey) // looks for the one object in the nodes that can be moved
+        {
+            int p = -1;
+            for (int x = 0; x < nodes.Count; x++)
+            {
+                Node temp = (Node)nodes[x];
+                if (temp.Moved == true)
+                    p = x;
+            }
+            return p;
+        }
+       
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+            label1.Text = searchopen(e.X,e.Y)+"(" + e.X + ", " + e.Y + ")";
+           
+        }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+          // this creates a node with the current coordinates
+            if (state == 0) // normal mode
+            {   
+                  if (open)
+                    {
+                        Node n = new Node();
+                        n.Name=""+(char)count;
+                        count++;
+                        n.X = e.X;
+                        n.Y = e.Y;
+                        nodes.Add(n);
+                        pictureBox1.Refresh();
+                    }                
+                
+            }
+            if (state == 1) // move mode
+            {
+                int m = searchMove(e.X, e.Y);
+                if (movetoggle == false)
+                {
+                    if (m != -1) // checks is a movable node is found
+                    {
+                        ((Node)nodes[m]).Moved = true;
+                        movetoggle = true;
+                        pictureBox1.Refresh();
+                    }
+                }
+                else
+                {
+                   
+                    if (m == -1) // checks for open locations
+                    {
+                        int y= searchMovedNode(e.X, e.Y);
+                        //MessageBox.Show("" + ((Node)nodes[y]).Name + "=" + ((Node)nodes[y]).X + "  " + ((Node)nodes[y]).Y);
+                        ((Node)nodes[y]).Moved = false;
+                        ((Node)nodes[y]).X = e.X;
+                        ((Node)nodes[y]).Y = e.Y;
+                         movetoggle=false;
+                         pictureBox1.Refresh();
+                    }
+                }
+                
+            }
+            if (state == 2) // remove mode
+            {
+
+            }
+       }
+
+        private void normalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            state = 0; // normal mode settings for the nodes
+        }
+
+        private void moveNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            state = 1; // move seeting for the nodes
+        }
+
+        private void removeNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            state = 2; //remove settings for the nodes
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            for (int x = 0; x < nodes.Count; x++)
+            {
+                Node temp = (Node)nodes[x];
+               if(temp.Moved==false)
+                g.DrawArc(Pens.Red, temp.X, temp.Y, 10, 10, 0, 360);
+               else
+                g.DrawArc(Pens.Yellow, temp.X, temp.Y, 10, 10, 0, 360);
+               
+            }
+        }
+    }
+}
