@@ -501,18 +501,18 @@ namespace AliacSearchAlgo
                 {
                     Node current = getMin(activeParts,visited);
                     visited.Add(current);
+                    current.Expanded = true;
 
                     foreach(Node n in current.getNeighbor())
                     {
                         if (!visited.Contains(n))
                         {
                             n.Origin = current;
-                            n.Value = getCost(n);
+                            n.Value = getDistance(n, current) + current.Value;
                             activeParts.Add(n);
                         }
                     }
                 }
-
 
                 Node i = g;
                 while (i.Origin != null)
