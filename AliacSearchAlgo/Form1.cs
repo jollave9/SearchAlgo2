@@ -499,22 +499,68 @@ namespace AliacSearchAlgo
 
                 while (!visited.Contains(g))
                 {
-                    Node current = getMin(activeParts,visited);
-                    visited.Add(current);
-                    current.Expanded = true;
-
-                    foreach(Node n in current.getNeighbor())
+                    try
                     {
-                        if (!visited.Contains(n))
+                        Node current = getMin(activeParts, visited);
+                        Console.WriteLine(current.Name);
+                        //Console.WriteLine("x:"+current.X+"y:"+current.Y);
+                        //visited.Add(current);
+                        //activeParts.Remove(current);
+                        current.Expanded = true;
+
+                        foreach (Node n in current.getNeighbor())
                         {
-                            n.Origin = current;
-                            n.Value = getDistance(n, current) + current.Value;
-                            activeParts.Add(n);
+
+                            if (!visited.Contains(n))
+                            {
+                                
+                                if (n.Equals(g))
+                                {
+                                    if (n.Value > current.Value + getDistance(current, n))
+                                    {
+                                        n.Origin = current;
+                                        n.Value = getDistance(n, current) + current.Value;
+                                        activeParts.Add(n);
+                                    }
+                                }
+                                else
+                                {
+                                    n.Origin = current;
+                                    n.Value = getDistance(n, current) + current.Value;
+                                    activeParts.Add(n);
+                                }
+
+                            }
                         }
+                        visited.Add(current);
+
                     }
+                    
+                    catch (Exception ex) {
+                        double min = Double.MaxValue;
+                        foreach(Node n in g.getNeighbor())
+                        {
+                            double temp = n.Value + getDistance(g, n);
+                            Console.WriteLine("\nName:" + n.Name + "Value:" +temp );
+
+                            if (temp <= min)
+                            {
+                                min = temp;
+                                g.Origin = n;
+                            }
+                        }
+                        visited.Add(g);
+                    }
+                    
                 }
+                /*
+                foreach(Node n in activeParts)
+                {
+                    Console.WriteLine("\nName:"+n.Name + "Value:"+n.Value);
+                }*/
 
                 Node i = g;
+                
                 while (i.Origin != null)
                 {
                     i.Expanded = true;
@@ -529,7 +575,6 @@ namespace AliacSearchAlgo
             
             
         }
-
         //visited was passed in order to check if the node is already been visited
         private Node getMin(ArrayList activeParts,ArrayList visited)
         {
@@ -538,7 +583,7 @@ namespace AliacSearchAlgo
 
             foreach(Node n in activeParts)
             {
-                if (n.Value < min && !visited.Contains(n))
+                if (n.Value <= min && !visited.Contains(n))
                 {
                     min = n.Value;
                     minNode = n;
@@ -581,7 +626,7 @@ namespace AliacSearchAlgo
 
             foreach (Node n in nodes)
             {
-                heuristicValues.Add(new ArrayList() { n, getDistance(n, (Node)nodes[start]) });
+                heuristicValues.Add(new ArrayList() { n, getDistance(n, (Node)nodes[goal]) });
             }
                 ArrayList activeParts = new ArrayList();
                 ArrayList visited = new ArrayList();
@@ -596,28 +641,75 @@ namespace AliacSearchAlgo
                 foreach (Node n in s.getNeighbor())
                 {
                     n.Origin = s;
-                    n.Value = getDistance(n, s);
+                    n.Value = getDistance(n, s) + getHeuristicValue(n, heuristicValues);
                     activeParts.Add(n);
                 }
 
                 while (!visited.Contains(g))
                 {
-                    Node current = getMin(activeParts, visited);
-                    visited.Add(current);
-
-                    foreach (Node n in current.getNeighbor())
+                    try
                     {
-                        if (!visited.Contains(n))
-                        {
-                            n.Origin = current;
-                            n.Value = getCost(n)+getHeuristicValue(n,heuristicValues);
-                            activeParts.Add(n);
-                        }
-                    }
-                }
+                        Node current = getMin(activeParts, visited);
+                        Console.WriteLine(current.Name);
+                        //Console.WriteLine("x:"+current.X+"y:"+current.Y);
+                        //visited.Add(current);
+                        //activeParts.Remove(current);
+                        current.Expanded = true;
 
+                        foreach (Node n in current.getNeighbor())
+                        {
+
+                            if (!visited.Contains(n))
+                            {
+
+                                if (n.Equals(g))
+                                {
+                                    if (n.Value > current.Value + getDistance(current, n))
+                                    {
+                                        n.Origin = current;
+                                        n.Value = getDistance(n, current) + current.Value + getHeuristicValue(n,heuristicValues);
+                                        activeParts.Add(n);
+                                    }
+                                }
+                                else
+                                {
+                                    n.Origin = current;
+                                    n.Value = getDistance(n, current) + current.Value + getHeuristicValue(n, heuristicValues);
+                                    activeParts.Add(n);
+                                }
+
+                            }
+                        }
+                        visited.Add(current);
+
+                    }
+
+                    catch (Exception ex)
+                    {
+                        double min = Double.MaxValue;
+                        foreach (Node n in g.getNeighbor())
+                        {
+                            double temp = n.Value + getDistance(g, n);
+                            Console.WriteLine("\nName:" + n.Name + "Value:" + temp);
+
+                            if (temp <= min)
+                            {
+                                min = temp;
+                                g.Origin = n;
+                            }
+                        }
+                        visited.Add(g);
+                    }
+
+                }
+                /*
+                foreach(Node n in activeParts)
+                {
+                    Console.WriteLine("\nName:"+n.Name + "Value:"+n.Value);
+                }*/
 
                 Node i = g;
+
                 while (i.Origin != null)
                 {
                     i.Expanded = true;
@@ -625,6 +717,7 @@ namespace AliacSearchAlgo
                 }
                 explored = g;
                 pictureBox1.Refresh();
+
             }
             else { MessageBox.Show("Start or Goal nodes not Set."); }
 

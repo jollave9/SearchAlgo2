@@ -46,6 +46,8 @@
             this.fullSearchToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.uniformCostSearchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullSearchToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.resetSearchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,8 +61,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fullSearchToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -150,14 +150,14 @@
             // stepToolStripMenuItem
             // 
             this.stepToolStripMenuItem.Name = "stepToolStripMenuItem";
-            this.stepToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stepToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.stepToolStripMenuItem.Text = "Step";
             this.stepToolStripMenuItem.Click += new System.EventHandler(this.stepToolStripMenuItem_Click);
             // 
             // fullSearchToolStripMenuItem
             // 
             this.fullSearchToolStripMenuItem.Name = "fullSearchToolStripMenuItem";
-            this.fullSearchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fullSearchToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.fullSearchToolStripMenuItem.Text = "Full Search";
             this.fullSearchToolStripMenuItem.Click += new System.EventHandler(this.fullSearchToolStripMenuItem_Click);
             // 
@@ -196,7 +196,7 @@
             // fullSearchToolStripMenuItem2
             // 
             this.fullSearchToolStripMenuItem2.Name = "fullSearchToolStripMenuItem2";
-            this.fullSearchToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.fullSearchToolStripMenuItem2.Size = new System.Drawing.Size(131, 22);
             this.fullSearchToolStripMenuItem2.Text = "Full Search";
             this.fullSearchToolStripMenuItem2.Click += new System.EventHandler(this.fullSearchToolStripMenuItem2_Click);
             // 
@@ -211,9 +211,24 @@
             // fullToolStripMenuItem
             // 
             this.fullToolStripMenuItem.Name = "fullToolStripMenuItem";
-            this.fullToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fullToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.fullToolStripMenuItem.Text = "Full search";
             this.fullToolStripMenuItem.Click += new System.EventHandler(this.fullToolStripMenuItem_Click);
+            // 
+            // aToolStripMenuItem
+            // 
+            this.aToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fullSearchToolStripMenuItem3});
+            this.aToolStripMenuItem.Name = "aToolStripMenuItem";
+            this.aToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.aToolStripMenuItem.Text = "A*";
+            // 
+            // fullSearchToolStripMenuItem3
+            // 
+            this.fullSearchToolStripMenuItem3.Name = "fullSearchToolStripMenuItem3";
+            this.fullSearchToolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+            this.fullSearchToolStripMenuItem3.Text = "Full search";
+            this.fullSearchToolStripMenuItem3.Click += new System.EventHandler(this.fullSearchToolStripMenuItem3_Click);
             // 
             // resetSearchToolStripMenuItem
             // 
@@ -314,21 +329,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
-            // 
-            // aToolStripMenuItem
-            // 
-            this.aToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fullSearchToolStripMenuItem3});
-            this.aToolStripMenuItem.Name = "aToolStripMenuItem";
-            this.aToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.aToolStripMenuItem.Text = "A*";
-            // 
-            // fullSearchToolStripMenuItem3
-            // 
-            this.fullSearchToolStripMenuItem3.Name = "fullSearchToolStripMenuItem3";
-            this.fullSearchToolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
-            this.fullSearchToolStripMenuItem3.Text = "Full search";
-            this.fullSearchToolStripMenuItem3.Click += new System.EventHandler(this.fullSearchToolStripMenuItem3_Click);
             // 
             // Form1
             // 
