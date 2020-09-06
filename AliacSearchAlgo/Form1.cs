@@ -525,10 +525,24 @@ namespace AliacSearchAlgo
                                 }
                                 else
                                 {
-                                    n.Origin = current;
-                                    n.Value = getDistance(n, current) + current.Value;
-                                    activeParts.Add(n);
+                                    if (n.Value!=0)
+                                    {
+                                        if (n.Value > current.Value + getDistance(current, n))
+                                        {
+                                            n.Origin = current;
+                                            n.Value = getDistance(n, current) + current.Value;
+                                            activeParts.Add(n);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        n.Origin = current;
+                                        n.Value = getDistance(n, current) + current.Value;
+                                        activeParts.Add(n);
+                                    }
+
                                 }
+
 
                             }
                         }
@@ -641,7 +655,7 @@ namespace AliacSearchAlgo
                 foreach (Node n in s.getNeighbor())
                 {
                     n.Origin = s;
-                    n.Value = getDistance(n, s) + getHeuristicValue(n, heuristicValues);
+                    n.Value = getDistance(n, s);
                     activeParts.Add(n);
                 }
 
@@ -649,7 +663,7 @@ namespace AliacSearchAlgo
                 {
                     try
                     {
-                        Node current = getMin(activeParts, visited);
+                        Node current = getMinAStar(activeParts, visited);
                         Console.WriteLine(current.Name);
                         //Console.WriteLine("x:"+current.X+"y:"+current.Y);
                         //visited.Add(current);
@@ -667,15 +681,27 @@ namespace AliacSearchAlgo
                                     if (n.Value > current.Value + getDistance(current, n))
                                     {
                                         n.Origin = current;
-                                        n.Value = getDistance(n, current) + current.Value + getHeuristicValue(n,heuristicValues);
+                                        n.Value = getDistance(n, current) + current.Value ;
                                         activeParts.Add(n);
                                     }
                                 }
                                 else
                                 {
-                                    n.Origin = current;
-                                    n.Value = getDistance(n, current) + current.Value + getHeuristicValue(n, heuristicValues);
-                                    activeParts.Add(n);
+                                    if (n.Value != 0)
+                                    {
+                                        if (n.Value > current.Value + getDistance(current, n))
+                                        {
+                                            n.Origin = current;
+                                            n.Value = getDistance(n, current) + current.Value;
+                                            activeParts.Add(n);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        n.Origin = current;
+                                        n.Value = getDistance(n, current) + current.Value;
+                                        activeParts.Add(n);
+                                    }
                                 }
 
                             }
@@ -723,6 +749,25 @@ namespace AliacSearchAlgo
 
 
         }
+
+        //visited was passed in order to check if the node is already been visited
+        private Node getMinAStar(ArrayList activeParts, ArrayList visited)
+        {
+            double min = Double.MaxValue;
+            Node minNode = null;
+
+            foreach (Node n in activeParts)
+            {
+                if (n.Value + getDistance(n, (Node)nodes[goal]) <= min && !visited.Contains(n))
+                {
+                    min = n.Value+ getDistance(n, (Node)nodes[goal]);
+                    minNode = n;
+                }
+            }
+
+            return minNode;
+        }
+
         private double getHeuristicValue(Node n,ArrayList heuristicValues)
         {
             double result = 0;
