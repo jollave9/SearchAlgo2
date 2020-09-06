@@ -513,8 +513,8 @@ namespace AliacSearchAlgo
 
                             if (!visited.Contains(n))
                             {
-                                
-                                if (n.Equals(g))
+
+                                if (n.Value != 0)
                                 {
                                     if (n.Value > current.Value + getDistance(current, n))
                                     {
@@ -525,7 +525,23 @@ namespace AliacSearchAlgo
                                 }
                                 else
                                 {
-                                    if (n.Value!=0)
+                                    n.Origin = current;
+                                    n.Value = getDistance(n, current) + current.Value;
+                                    activeParts.Add(n);
+                                }
+                                /*
+                                if (n.Equals(g))
+                                {
+                                    if (n.Value > current.Value + getDistance(current, n))
+                                    {
+                                        n.Origin = current;
+                                        n.Value = getDistance(n, current) + current.Value ;
+                                        activeParts.Add(n);
+                                    }
+                                }
+                                else
+                                {
+                                    if (n.Value != 0)
                                     {
                                         if (n.Value > current.Value + getDistance(current, n))
                                         {
@@ -540,8 +556,7 @@ namespace AliacSearchAlgo
                                         n.Value = getDistance(n, current) + current.Value;
                                         activeParts.Add(n);
                                     }
-
-                                }
+                                }*/
 
 
                             }
@@ -663,8 +678,9 @@ namespace AliacSearchAlgo
                 {
                     try
                     {
-                        Node current = getMinAStar(activeParts, visited);
-                        Console.WriteLine(current.Name);
+                        Node current = getMinAStar(activeParts, visited,heuristicValues);
+                        double temp = current.Value + getHeuristicValue(current, heuristicValues);
+                        Console.WriteLine("Name:"+current.Name+" Total Cost:"+temp);
                         //Console.WriteLine("x:"+current.X+"y:"+current.Y);
                         //visited.Add(current);
                         //activeParts.Remove(current);
@@ -675,7 +691,22 @@ namespace AliacSearchAlgo
 
                             if (!visited.Contains(n))
                             {
-
+                                if (n.Value != 0)
+                                {
+                                    if (n.Value > current.Value + getDistance(current, n))
+                                    {
+                                        n.Origin = current;
+                                        n.Value = getDistance(n, current) + current.Value;
+                                        activeParts.Add(n);
+                                    }
+                                }
+                                else
+                                {
+                                    n.Origin = current;
+                                    n.Value = getDistance(n, current) + current.Value;
+                                    activeParts.Add(n);
+                                }
+                                /*
                                 if (n.Equals(g))
                                 {
                                     if (n.Value > current.Value + getDistance(current, n))
@@ -702,7 +733,7 @@ namespace AliacSearchAlgo
                                         n.Value = getDistance(n, current) + current.Value;
                                         activeParts.Add(n);
                                     }
-                                }
+                                }*/
 
                             }
                         }
@@ -716,7 +747,7 @@ namespace AliacSearchAlgo
                         foreach (Node n in g.getNeighbor())
                         {
                             double temp = n.Value + getDistance(g, n);
-                            Console.WriteLine("\nName:" + n.Name + "Value:" + temp);
+                            //Console.WriteLine("\nName:" + n.Name + "Value:" + temp);
 
                             if (temp <= min)
                             {
@@ -728,12 +759,10 @@ namespace AliacSearchAlgo
                     }
 
                 }
-                /*
-                foreach(Node n in activeParts)
+                foreach(Node n in nodes)
                 {
-                    Console.WriteLine("\nName:"+n.Name + "Value:"+n.Value);
-                }*/
-
+                    Console.WriteLine("\nName:"+n.Name + "Value:" + n.Value+ "HeuristicValue:" +getHeuristicValue(n,heuristicValues));
+                }
                 Node i = g;
 
                 while (i.Origin != null)
@@ -751,16 +780,16 @@ namespace AliacSearchAlgo
         }
 
         //visited was passed in order to check if the node is already been visited
-        private Node getMinAStar(ArrayList activeParts, ArrayList visited)
+        private Node getMinAStar(ArrayList activeParts, ArrayList visited,ArrayList heuristicValues)
         {
             double min = Double.MaxValue;
             Node minNode = null;
 
             foreach (Node n in activeParts)
             {
-                if (n.Value + getDistance(n, (Node)nodes[goal]) <= min && !visited.Contains(n))
+                if (n.Value + getHeuristicValue(n,heuristicValues) <= min && !visited.Contains(n))
                 {
-                    min = n.Value+ getDistance(n, (Node)nodes[goal]);
+                    min = n.Value+ getHeuristicValue(n, heuristicValues);
                     minNode = n;
                 }
             }
